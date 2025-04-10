@@ -13,12 +13,13 @@ import { Progress } from "@/components/ui/progress"
 import confetti from "canvas-confetti"
 
 interface PasswordFormProps {
-  checkPassword: (password: string) => Promise<boolean>
-  nextLink: string
+  checkPasswordAction: (password: string, puzzleId: string) => Promise<string>
+  puzzleId: string
 }
 
-export function PasswordForm({ checkPassword, nextLink }: PasswordFormProps) {
+export function PasswordForm({ checkPasswordAction, puzzleId }: PasswordFormProps) {
   const [password, setPassword] = useState("")
+  const [nextLink, setNextLink] = useState("/404")
   const [isCorrect, setIsCorrect] = useState(false)
   const [isIncorrect, setIsIncorrect] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -56,22 +57,22 @@ export function PasswordForm({ checkPassword, nextLink }: PasswordFormProps) {
     setIsIncorrect(false)
 
     try {
-      const result = await checkPassword(password)
+      const link: string = await checkPasswordAction(password, puzzleId);
 
-      if (result) {
+      if (link) {
+        setNextLink(link)
         setIsCorrect(true)
         setShowSuccess(true)
         triggerConfetti()
       } else {
         setIsIncorrect(true)
-        setCooldownTime(3) // 3 second cooldown
+        setCooldownTime(3)
       }
     } catch (error) {
       setIsIncorrect(true)
-      setCooldownTime(3) // 3 second cooldown
+      setCooldownTime(3)
     }
 
-    // Add delay before allowing next attempt (anti-brute force)
     setTimeout(() => {
       setIsSubmitting(false)
     }, 500)
@@ -140,14 +141,14 @@ export function PasswordForm({ checkPassword, nextLink }: PasswordFormProps) {
       <Dialog open={showSuccess} onOpenChange={setShowSuccess}>
         <DialogContent className="bg-[#2A0E61] border-2 border-purple-500 text-cyan-300 shadow-[0_0_30px_rgba(110,64,201,0.7)]">
           <DialogHeader>
-            <DialogTitle className="text-2xl text-center font-pixel text-cyan-300">🎮 LEVEL COMPLETE! 🎮</DialogTitle>
+            <DialogTitle className="text-2xl text-center font-pixel text-cyan-300">🕵️    LEVEL COMPLETE!🔎 </DialogTitle>
             <DialogDescription className="text-center text-purple-300">
               You've unlocked the next challenge!
             </DialogDescription>
           </DialogHeader>
           <div className="py-6 text-center space-y-4">
             <div className="text-4xl font-pixel bg-gradient-to-r from-purple-400 to-cyan-400 text-transparent bg-clip-text">
-              +100 POINTS
+              You Did It!
             </div>
             <p className="text-purple-200">Your puzzle-solving skills are impressive!</p>
           </div>

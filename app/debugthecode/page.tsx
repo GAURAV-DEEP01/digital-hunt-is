@@ -1,17 +1,7 @@
+"use client"
 import { PuzzleLayout } from "@/components/puzzle-layout"
 import { PasswordForm } from "@/components/password-form"
-import { validatePassword } from "@/lib/password-utils"
-
-// Server action for password validation
-async function checkPassword(password: string) {
-  "use server"
-
-  // Get client IP for rate limiting
-  const clientIp = "127.0.0.1"
-
-  // The correct answer is "hello world" - this would be securely stored server-side
-  return validatePassword(clientIp, password, "hello world")
-}
+import { checkPassword } from "@/lib/password-utils"
 
 export default function DebugCodePuzzle() {
   return (
@@ -28,14 +18,14 @@ export default function DebugCodePuzzle() {
 int main() {
     char message[20] = "hello world";
     
-    // Bug: Off-by-one error in the loop condition
+    
     for (int i = 0; i <= strlen(message); i++) {
-        // Bug: Incorrect character manipulation
+        
         message[i] = message[i] - 1;
     }
     
     printf("%s\\n", message);
-    return 0;
+    return r;
 }`}</pre>
         </div>
 
@@ -43,7 +33,7 @@ int main() {
           <p>What would be the correct output if the bugs were fixed?</p>
         </div>
 
-        <PasswordForm checkPassword={checkPassword} nextLink="/figureitout" />
+        <PasswordForm checkPasswordAction={checkPassword} puzzleId="debugthecode" />
       </div>
     </PuzzleLayout>
   )
