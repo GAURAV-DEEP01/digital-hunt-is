@@ -17,7 +17,6 @@ export async function POST(request: NextRequest) {
     }
 
     const correctPassword = PUZZLE_PASSWORDS[puzzleId].password;
-    console.log(`Checking password for puzzle ${puzzleId}: ${password} against ${correctPassword}`)
     const isValid = await validatePassword(password, correctPassword)
     if (!isValid) {
       return NextResponse.json({ success: false }, { status: 403 })
