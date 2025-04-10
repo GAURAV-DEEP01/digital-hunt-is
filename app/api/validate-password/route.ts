@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import { validatePassword } from "@/lib/password-utils"
 
 const PUZZLE_PASSWORDS: Record<string, { password: string, link: string }> = {
-  shapecountpuzz: { password: "46", link: "/theciphergame" },
+  shapecountpuzz: { password: "46", link: "https://github.com/nischal-shetty2/find-me/" },
   theciphergame: { password: "puzzle", link: "/debugthecode" },
   debugthecode: { password: "hello world", link: "/figureitout" },
   figureitout: { password: "secretcode", link: "/success" },
