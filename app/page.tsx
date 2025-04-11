@@ -1,28 +1,18 @@
-'use client'
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Gamepad2, Star, Sparkles, Puzzle, Brain, Zap, Trophy } from "lucide-react"
+"use client";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Sparkles, Puzzle, Zap, Trophy } from "lucide-react";
+import { floatingIcons } from "@/lib/utils";
 
 export default function Home() {
-  const floatingIcons = [
-    { id: 1, icon: Star, left: "10%", top: "15%", size: "1.2rem", duration: "15s", opacity: 0.3, delay: "0s" },
-    { id: 2, icon: Puzzle, left: "85%", top: "25%", size: "1.5rem", duration: "18s", opacity: 0.2, delay: "1s" },
-    { id: 3, icon: Brain, left: "20%", top: "75%", size: "1.8rem", duration: "20s", opacity: 0.3, delay: "2s" },
-    { id: 4, icon: Zap, left: "75%", top: "80%", size: "1rem", duration: "12s", opacity: 0.2, delay: "3s" },
-    { id: 5, icon: Trophy, left: "30%", top: "10%", size: "1.4rem", duration: "17s", opacity: 0.25, delay: "1.5s" },
-    { id: 6, icon: Star, left: "60%", top: "65%", size: "1.3rem", duration: "19s", opacity: 0.15, delay: "2.5s" },
-    { id: 7, icon: Puzzle, left: "15%", top: "45%", size: "1.6rem", duration: "16s", opacity: 0.2, delay: "0.5s" },
-    { id: 8, icon: Brain, left: "80%", top: "40%", size: "1.1rem", duration: "14s", opacity: 0.3, delay: "3.5s" },
-    { id: 9, icon: Zap, left: "40%", top: "85%", size: "1.7rem", duration: "21s", opacity: 0.25, delay: "1.2s" },
-    { id: 10, icon: Trophy, left: "65%", top: "15%", size: "1.5rem", duration: "13s", opacity: 0.2, delay: "2.8s" },
-    { id: 11, icon: Star, left: "25%", top: "30%", size: "1.2rem", duration: "18s", opacity: 0.15, delay: "0.8s" },
-    { id: 12, icon: Puzzle, left: "70%", top: "60%", size: "1.4rem", duration: "15s", opacity: 0.25, delay: "3.2s" },
-    { id: 13, icon: Brain, left: "50%", top: "20%", size: "1.3rem", duration: "17s", opacity: 0.2, delay: "1.7s" },
-    { id: 14, icon: Zap, left: "35%", top: "70%", size: "1.6rem", duration: "19s", opacity: 0.3, delay: "2.2s" },
-    { id: 15, icon: Trophy, left: "90%", top: "55%", size: "1.1rem", duration: "16s", opacity: 0.25, delay: "0.3s" }
-  ];
-
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-b from-[#0F0524] to-[#1A0745] overflow-hidden relative">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,...')] opacity-10 animate-pulse"></div>
@@ -38,31 +28,40 @@ export default function Home() {
               top: item.top,
               opacity: item.opacity,
               animationDuration: item.duration,
-              animationDelay: item.delay
-            }}
-          >
+              animationDelay: item.delay,
+            }}>
             <IconComponent size={item.size} className="text-purple-500" />
           </div>
         );
       })}
 
       <div className="absolute top-1/4 left-1/4 w-32 h-32 rounded-full bg-purple-800/20 blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-1/3 right-1/4 w-40 h-40 rounded-full bg-indigo-700/20 blur-3xl animate-pulse" style={{ animationDelay: "1.5s" }}></div>
-      <div className="absolute top-2/3 right-1/3 w-24 h-24 rounded-full bg-fuchsia-700/20 blur-3xl animate-pulse" style={{ animationDelay: "0.8s" }}></div>
+      <div
+        className="absolute bottom-1/3 right-1/4 w-40 h-40 rounded-full bg-indigo-700/20 blur-3xl animate-pulse"
+        style={{ animationDelay: "1.5s" }}></div>
+      <div
+        className="absolute top-2/3 right-1/3 w-24 h-24 rounded-full bg-fuchsia-700/20 blur-3xl animate-pulse"
+        style={{ animationDelay: "0.8s" }}></div>
 
-      <div className="relative z-10">
+      <div className="relative z-10 py-10">
         <div className="text-center mb-8">
           <div className="relative">
             <h1 className="text-5xl md:text-7xl font-pixel text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-300 to-cyan-400 glow-text mb-4 animate-pulse">
               Digital Hunt
             </h1>
-            <Sparkles className="absolute -top-6 -right-6 text-yellow-300 animate-spin" style={{ animationDuration: '8s' }} />
-            <Sparkles className="absolute -top-6 -left-6 text-cyan-300 animate-spin" style={{ animationDuration: '8s', animationDirection: 'reverse' }} />
+            <Sparkles
+              className="absolute -top-6 -right-6 text-yellow-300 animate-spin"
+              style={{ animationDuration: "8s" }}
+            />
+            <Sparkles
+              className="absolute -top-6 -left-6 text-cyan-300 animate-spin"
+              style={{ animationDuration: "8s", animationDirection: "reverse" }}
+            />
           </div>
-          <p className="text-purple-300 max-w-md mx-auto text-lg tracking-wide font-light">
-            Join the ultimate challenge — solve puzzles, uncover secrets, and reach the treasure.
+          <p className="text-purple-200 mx-auto text-lg tracking-wide">
+            solve puzzles, uncover secrets, and reach the treasure.
           </p>
-          <div className="w-full h-px bg-cyan-400 opacity-70 mt-4 animate-scanning"></div>
+          {/* <div className="w-full h-px bg-cyan-400 opacity-70 mt-4 animate-scanning"></div> */}
         </div>
 
         <Card className="border-2 border-purple-600 bg-[#2A0E61]/80 text-cyan-300 shadow-[0_0_50px_rgba(110,64,201,0.6)] backdrop-blur-sm relative overflow-hidden">
@@ -75,30 +74,36 @@ export default function Home() {
 
           <div className="relative z-10">
             <CardHeader className="border-b border-purple-700/50">
-              <div className="flex justify-center mb-4 relative">
-                <div className="absolute inset-0 bg-purple-500/20 blur-xl rounded-full"></div>
-                <Puzzle className="h-16 w-16 text-cyan-400 animate-pulse relative z-10" />
-              </div>
-              <CardTitle className="text-3xl text-center font-pixel text-cyan-300 glow-text">Start the Hunt</CardTitle>
-              <CardDescription className="text-center text-purple-300 text-lg">
-                Crack the clues. Advance through the trail. Find the final prize.
-              </CardDescription>
+              <CardTitle className="text-3xl text-center font-pixel text-cyan-300 glow-text">
+                Start the Hunt
+              </CardTitle>
             </CardHeader>
 
             <CardContent className="text-center pt-6 relative">
-              <p className="mb-6 text-purple-200">
-                This digital hunt is packed with brain-teasers, patterns, and logic-based tasks.
+              <p className="mb-2 text-purple-200">
+                This digital hunt is packed with brain-teasers, patterns, and
+                logic-based tasks.
               </p>
-              <p className="mb-6 text-purple-200">Stay sharp, solve fast, and claim your victory!</p>
+              <p className="mb-6 text-purple-200">
+                Stay sharp, solve fast, and claim your victory!
+              </p>
 
-              <div className="w-32 h-32 mx-auto relative opacity-20 mt-2 mb-2">
-                <div className="absolute inset-0 rounded-full border border-cyan-400"></div>
-                <div className="absolute inset-2 rounded-full border border-cyan-400"></div>
-                <div className="absolute inset-4 rounded-full border border-cyan-400"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-transparent opacity-50 animate-radar-spin"></div>
+              <div className="flex flex-col items-center justify-center">
+                <div className="flex justify-center mb-4 relative">
+                  <div className="absolute inset-0 bg-purple-500/20 blur-xl rounded-full"></div>
+                  <Puzzle className="h-16 w-16 text-cyan-400 animate-pulse relative z-10" />
+                </div>
+                <p className="text-purple-200 text-sm text-center max-w-xs">
+                  "Only the curious will crack the code. Let the mystery guide
+                  you."
+                </p>
               </div>
             </CardContent>
-
+            <div className="my-2 text-purple-400 text-sm font-pixel animate-bounce flex items-center justify-center gap-2">
+              <Zap className="h-4 w-4" />
+              <span>Ready to solve the first puzzle?</span>
+              <Zap className="h-4 w-4" />
+            </div>
             <CardFooter className="flex justify-center pb-8">
               <Link href="/shapecountpuzz">
                 <Button className="bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-700 hover:to-cyan-600 text-white font-pixel px-8 py-6 relative group overflow-hidden">
@@ -110,17 +115,11 @@ export default function Home() {
             </CardFooter>
           </div>
         </Card>
-
-        <div className="mt-8 text-purple-400 text-sm font-pixel animate-bounce flex items-center justify-center gap-2">
-          <Zap className="h-4 w-4" />
-          <span>Ready to solve the first puzzle?</span>
-          <Zap className="h-4 w-4" />
-        </div>
       </div>
 
       <div className="absolute top-4 right-4 text-purple-500 opacity-50">
         <Trophy size={30} className="animate-pulse" />
       </div>
     </div>
-  )
+  );
 }
