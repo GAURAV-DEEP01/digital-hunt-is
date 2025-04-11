@@ -16,7 +16,9 @@ interface PasswordFormProps {
   checkPasswordAction: (password: string, puzzleId: string) => Promise<string>
   puzzleId: string
 }
-const penaltyTime = 15;
+
+const PENALTY_TIME = 10;
+
 export function PasswordForm({ checkPasswordAction, puzzleId }: PasswordFormProps) {
   const [password, setPassword] = useState("")
   const [nextLink, setNextLink] = useState("/404")
@@ -26,19 +28,59 @@ export function PasswordForm({ checkPasswordAction, puzzleId }: PasswordFormProp
   const [cooldownTime, setCooldownTime] = useState(0)
   const [showSuccess, setShowSuccess] = useState(false)
 
+  // Load cooldown state from localStorage on initial render
+  useEffect(() => {
+    // Function to get the remaining cooldown time
+    const getRemainingCooldown = () => {
+      try {
+        const cooldownData = localStorage.getItem(`puzzle-cooldown-${puzzleId}`)
+        if (cooldownData) {
+          const { endTime } = JSON.parse(cooldownData)
+          const now = Date.now()
+          const remainingTime = Math.max(0, Math.ceil((endTime - now) / 1000))
+          return remainingTime
+        }
+      } catch (error) {
+        console.error("Error reading cooldown from localStorage:", error)
+      }
+      return 0
+    }
+
+    // Set initial cooldown state
+    const initialCooldown = getRemainingCooldown()
+    if (initialCooldown > 0) {
+      setCooldownTime(initialCooldown)
+    }
+  }, [puzzleId])
+
+  // Update timer and localStorage
   useEffect(() => {
     let timer: NodeJS.Timeout
 
     if (cooldownTime > 0) {
+      // Update localStorage with end time
+      if (cooldownTime === PENALTY_TIME) {
+        const endTime = Date.now() + cooldownTime * 1000
+        localStorage.setItem(`puzzle-cooldown-${puzzleId}`, JSON.stringify({
+          endTime
+        }))
+      }
+
+      // Countdown timer
       timer = setTimeout(() => {
         setCooldownTime(cooldownTime - 1)
+
+        // Clear localStorage when timer reaches zero
+        if (cooldownTime === 1) {
+          localStorage.removeItem(`puzzle-cooldown-${puzzleId}`)
+        }
       }, 1000)
     }
 
     return () => {
       if (timer) clearTimeout(timer)
     }
-  }, [cooldownTime])
+  }, [cooldownTime, puzzleId])
 
   const triggerConfetti = () => {
     confetti({
@@ -51,7 +93,24 @@ export function PasswordForm({ checkPasswordAction, puzzleId }: PasswordFormProp
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (isSubmitting || cooldownTime > 0) return
+    // Double-check cooldown time from localStorage before submitting
+    try {
+      const cooldownData = localStorage.getItem(`puzzle-cooldown-${puzzleId}`)
+      if (cooldownData) {
+        const { endTime } = JSON.parse(cooldownData)
+        const now = Date.now()
+        const remainingTime = Math.max(0, Math.ceil((endTime - now) / 1000))
+
+        if (remainingTime > 0) {
+          setCooldownTime(remainingTime)
+          return
+        }
+      }
+    } catch (error) {
+      console.error("Error checking cooldown before submission:", error)
+    }
+
+    if (isSubmitting) return
 
     setIsSubmitting(true)
     setIsIncorrect(false)
@@ -64,13 +123,15 @@ export function PasswordForm({ checkPasswordAction, puzzleId }: PasswordFormProp
         setIsCorrect(true)
         setShowSuccess(true)
         triggerConfetti()
+        // Clear any cooldown when correct answer is submitted
+        localStorage.removeItem(`puzzle-cooldown-${puzzleId}`)
       } else {
         setIsIncorrect(true)
-        setCooldownTime(penaltyTime)
+        setCooldownTime(PENALTY_TIME)
       }
     } catch (error) {
       setIsIncorrect(true)
-      setCooldownTime(penaltyTime)
+      setCooldownTime(PENALTY_TIME)
     }
 
     setTimeout(() => {
@@ -105,7 +166,7 @@ export function PasswordForm({ checkPasswordAction, puzzleId }: PasswordFormProp
               <Clock className="h-4 w-4" />
               <div className="w-full">
                 <Progress
-                  value={((penaltyTime - cooldownTime) / penaltyTime) * 100}
+                  value={((PENALTY_TIME - cooldownTime) / PENALTY_TIME) * 100}
                   className="h-2 bg-[#1A0745]"
                   indicatorClassName="bg-gradient-to-r from-purple-600 to-cyan-500"
                 />

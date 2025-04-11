@@ -15,18 +15,27 @@ export async function POST(request: NextRequest) {
   try {
     const { puzzleId, password } = await request.json();
 
-    if (!PUZZLE_PASSWORDS[puzzleId]) {
+    const puzzle = PUZZLE_PASSWORDS[puzzleId];
+    if (!puzzle) {
       return NextResponse.json({ success: false }, { status: 404 });
     }
 
-    const correctPassword = PUZZLE_PASSWORDS[puzzleId].password;
-    const isValid = await validatePassword(password, correctPassword);
+    let isValid: boolean;
+
+    if (puzzleId === "figureitout") {
+      const normalize = (str: string) => str.trim().toLowerCase().replace(/\s+/g, "");
+      isValid = normalize(password) === normalize(puzzle.password);
+    } else {
+      isValid = await validatePassword(password, puzzle.password);
+    }
+
     if (!isValid) {
       return NextResponse.json({ success: false }, { status: 403 });
     }
+
     return NextResponse.json(
-      { success: isValid, link: PUZZLE_PASSWORDS[puzzleId].link },
-      { status: isValid ? 200 : 403 }
+      { success: true, link: puzzle.link },
+      { status: 200 }
     );
   } catch (error) {
     return NextResponse.json({ success: false }, { status: 500 });
