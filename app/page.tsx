@@ -1,18 +1,46 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Sparkles, Puzzle, Zap, Trophy } from "lucide-react";
+import { Sparkles, Puzzle, Trophy } from "lucide-react";
 import { floatingIcons } from "@/lib/utils";
 
+const targetTime = new Date("2025-04-12T14:10:00").getTime();
+
 export default function Home() {
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+  const [showButton, setShowButton] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const diff = targetTime - now;
+      if (diff <= 0) {
+        clearInterval(interval);
+        setShowButton(true);
+      } else {
+        setTimeLeft(diff);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatTime = (ms: number) => {
+    const totalSec = Math.floor(ms / 1000);
+    const hours = Math.floor((totalSec % 86400) / 3600);
+    const minutes = Math.floor((totalSec % 3600) / 60);
+    const seconds = totalSec % 60;
+    return `${hours}h ${minutes}m ${seconds}s`;
+  };
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-b from-[#0F0524] to-[#1A0745] overflow-hidden relative">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,...')] opacity-10 animate-pulse"></div>
@@ -61,7 +89,6 @@ export default function Home() {
           <p className="text-purple-200 mx-auto text-lg tracking-wide">
             solve puzzles, uncover secrets, and reach the treasure.
           </p>
-          {/* <div className="w-full h-px bg-cyan-400 opacity-70 mt-4 animate-scanning"></div> */}
         </div>
 
         <Card className="border-2 border-purple-600 bg-[#2A0E61]/80 text-cyan-300 shadow-[0_0_50px_rgba(110,64,201,0.6)] backdrop-blur-sm relative overflow-hidden">
@@ -99,19 +126,24 @@ export default function Home() {
                 </p>
               </div>
             </CardContent>
-            <div className="my-2 text-purple-400 text-sm font-pixel animate-bounce flex items-center justify-center gap-2">
-              <Zap className="h-4 w-4" />
-              <span>Ready to solve the first puzzle?</span>
-              <Zap className="h-4 w-4" />
-            </div>
+
+            {!showButton && timeLeft !== null && (
+              <div className="text-center my-4 font-pixel text-purple-300">
+                Begins in :{" "}
+                <span className="text-cyan-400">{formatTime(timeLeft)}</span>
+              </div>
+            )}
+
             <CardFooter className="flex justify-center pb-8">
-              <Link href="https://v0-circle-drawing-project.vercel.app/">
-                <Button className="bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-700 hover:to-cyan-600 text-white font-pixel px-8 py-6 relative group overflow-hidden">
-                  <span className="relative z-10">Begin Challenge</span>
-                  <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
-                  <div className="absolute -inset-px scale-x-0 group-hover:scale-x-100 bg-gradient-to-r from-yellow-400 to-pink-500 opacity-30 transition-transform origin-left"></div>
-                </Button>
-              </Link>
+              {showButton && (
+                <Link href="/shapecountpuzz">
+                  <Button className="bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-700 hover:to-cyan-600 text-white font-pixel px-8 py-6 relative group overflow-hidden">
+                    <span className="relative z-10">Begin Challenge</span>
+                    <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                    <div className="absolute -inset-px scale-x-0 group-hover:scale-x-100 bg-gradient-to-r from-yellow-400 to-pink-500 opacity-30 transition-transform origin-left"></div>
+                  </Button>
+                </Link>
+              )}
             </CardFooter>
           </div>
         </Card>
