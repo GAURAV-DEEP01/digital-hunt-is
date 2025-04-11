@@ -16,7 +16,7 @@ interface PasswordFormProps {
   checkPasswordAction: (password: string, puzzleId: string) => Promise<string>
   puzzleId: string
 }
-
+const penaltyTime = 15;
 export function PasswordForm({ checkPasswordAction, puzzleId }: PasswordFormProps) {
   const [password, setPassword] = useState("")
   const [nextLink, setNextLink] = useState("/404")
@@ -66,11 +66,11 @@ export function PasswordForm({ checkPasswordAction, puzzleId }: PasswordFormProp
         triggerConfetti()
       } else {
         setIsIncorrect(true)
-        setCooldownTime(10)
+        setCooldownTime(penaltyTime)
       }
     } catch (error) {
       setIsIncorrect(true)
-      setCooldownTime(10)
+      setCooldownTime(penaltyTime)
     }
 
     setTimeout(() => {
@@ -105,7 +105,7 @@ export function PasswordForm({ checkPasswordAction, puzzleId }: PasswordFormProp
               <Clock className="h-4 w-4" />
               <div className="w-full">
                 <Progress
-                  value={((10 - cooldownTime) / 10) * 100}
+                  value={((penaltyTime - cooldownTime) / penaltyTime) * 100}
                   className="h-2 bg-[#1A0745]"
                   indicatorClassName="bg-gradient-to-r from-purple-600 to-cyan-500"
                 />
