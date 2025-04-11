@@ -105,7 +105,7 @@ export default function Home() {
               <Zap className="h-4 w-4" />
             </div>
             <CardFooter className="flex justify-center pb-8">
-              <Link href="/shapecountpuzz">
+              <Link href="https://v0-circle-drawing-project.vercel.app/">
                 <Button className="bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-700 hover:to-cyan-600 text-white font-pixel px-8 py-6 relative group overflow-hidden">
                   <span className="relative z-10">Begin Challenge</span>
                   <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>

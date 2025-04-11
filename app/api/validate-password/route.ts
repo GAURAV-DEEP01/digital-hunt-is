@@ -4,11 +4,11 @@ import { validatePassword } from "@/lib/password-utils";
 const PUZZLE_PASSWORDS: Record<string, { password: string; link: string }> = {
   shapecountpuzz: {
     password: "46",
-    link: "https://github.com/nischal-shetty2/find-me/",
+    link: "/figureitoutyourselfsdsdsdfljasldkfjashdflaksdfjjfaasdfasdfdfasdf",
   },
-  theciphergame: { password: "puzzle", link: "/solvetheriddle" },
-  solvetheriddle: { password: "423", link: "https://wordle-hunt.vercel.app/" },
-  figureitout: { password: "secretcode", link: "/success" },
+  theciphergame: { password: "puzzle", link: "/solvetheriddle012dfqepdznmxcmnvzlajdfwoeiurqweoruqerqpuoerpouerq" },
+  solvetheriddle: { password: "423", link: "https://woxorxdl1l-eme-hun31t6ings3.vercel.app/" },
+  figureitout: { password: "secretcode", link: "https://drive.google.com/drive/folders/1acVqy_iu9wNw8tFZ8_7fzkSTNaro9eQL?usp=sharing" },
 };
 
 export async function POST(request: NextRequest) {
