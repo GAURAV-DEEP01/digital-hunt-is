@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useRef, useEffect } from "react";
 import { PuzzleLayout } from "@/components/puzzle-layout";
 import { PasswordForm } from "@/components/password-form";
@@ -10,7 +11,7 @@ const UNIT_DURATION_MS = 200;
 const DIT_DURATION = 1 * UNIT_DURATION_MS;
 const DAH_DURATION = 3 * UNIT_DURATION_MS;
 const INTRA_SYMBOL_GAP_DURATION = 1 * UNIT_DURATION_MS;
-const INTER_LETTER_GAP_DURATION = 2000;
+const INTER_LETTER_GAP_DURATION = 3000;
 
 type MorseSegment = {
   duration: number;
@@ -81,9 +82,8 @@ export default function MorseCodePuzzle() {
   const animationRef = useRef<number | null>(null);
   const sequenceIndexRef = useRef<number>(0);
   const timeInSegmentRef = useRef<number>(0);
-  const absoluteStartTimeRef = useRef<number | null>(null);
+  const lastTimestampRef = useRef<number | null>(null);
   const totalElapsedTimeRef = useRef<number>(0);
-
 
   const TOTAL_DURATION_MS = morseSequence.reduce((sum, seg) => sum + seg.duration, 0);
 
@@ -93,7 +93,6 @@ export default function MorseCodePuzzle() {
     height: number,
     segment: MorseSegment | null
   ) => {
-
     ctx.fillStyle = "#2A0E61";
     ctx.fillRect(0, 0, width, height - 20);
 
@@ -109,12 +108,10 @@ export default function MorseCodePuzzle() {
       ctx.arc(centerX, centerY, 60, 0, Math.PI * 2);
       ctx.fill();
 
-
       ctx.fillStyle = "#00FFFF";
       ctx.beginPath();
       ctx.arc(centerX, centerY, 30, 0, Math.PI * 2);
       ctx.fill();
-
 
       if (segment.symbol) {
         ctx.fillStyle = "#1A0745";
@@ -141,10 +138,8 @@ export default function MorseCodePuzzle() {
     const barY = height - 20;
     const barHeight = 20;
 
-
     ctx.fillStyle = "#1A0745";
     ctx.fillRect(0, barY, width, barHeight);
-
 
     const progressWidth = progress * width;
     if (progressWidth > 0) {
@@ -155,7 +150,6 @@ export default function MorseCodePuzzle() {
       ctx.fillRect(0, barY, progressWidth, barHeight);
     }
 
-
     ctx.strokeStyle = "#6E40C9";
     ctx.lineWidth = 2;
     ctx.strokeRect(0, barY, width, barHeight);
@@ -163,15 +157,25 @@ export default function MorseCodePuzzle() {
 
   const animate = (timestamp: number) => {
     const canvas = canvasRef.current;
-    if (!canvas || !absoluteStartTimeRef.current) {
+    if (!canvas) {
       setIsPlaying(false);
       return;
     }
+
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // Initialize lastTimestamp if it's the first frame
+    if (lastTimestampRef.current === null) {
+      lastTimestampRef.current = timestamp;
+      animationRef.current = requestAnimationFrame(animate);
+      return;
+    }
 
-    const delta = timestamp - absoluteStartTimeRef.current - totalElapsedTimeRef.current;
+    // Calculate time elapsed since last frame
+    const delta = timestamp - lastTimestampRef.current;
+    lastTimestampRef.current = timestamp;
+
     totalElapsedTimeRef.current += delta;
     timeInSegmentRef.current += delta;
 
@@ -197,29 +201,25 @@ export default function MorseCodePuzzle() {
       return;
     }
 
-
     drawSignal(ctx, canvas.width, canvas.height, currentSegment);
     const progress = Math.min(totalElapsedTimeRef.current / TOTAL_DURATION_MS, 1);
     drawProgressBar(ctx, canvas.width, canvas.height, progress);
-
 
     animationRef.current = requestAnimationFrame(animate);
   };
 
   const togglePlay = () => {
     if (isPlaying) {
-
+      // Pause animation
       if (animationRef.current !== null) {
         cancelAnimationFrame(animationRef.current);
         animationRef.current = null;
+        lastTimestampRef.current = null; // Reset timestamp to avoid jumps
       }
-      absoluteStartTimeRef.current = null;
       setIsPlaying(false);
     } else {
-
-      absoluteStartTimeRef.current = performance.now();
+      // Start/resume animation
       if (sequenceIndexRef.current >= morseSequence.length) {
-
         resetAnimationInternal();
       }
       animationRef.current = requestAnimationFrame(animate);
@@ -235,13 +235,12 @@ export default function MorseCodePuzzle() {
     setIsPlaying(false);
     sequenceIndexRef.current = 0;
     timeInSegmentRef.current = 0;
-    absoluteStartTimeRef.current = null;
+    lastTimestampRef.current = null;
     totalElapsedTimeRef.current = 0;
   }
 
   const resetAnimation = () => {
     resetAnimationInternal();
-
 
     const canvas = canvasRef.current;
     if (canvas) {
@@ -255,7 +254,6 @@ export default function MorseCodePuzzle() {
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText("TRYING AGAIN?", canvas.width / 2, (canvas.height - 20) / 2);
-
 
         setTimeout(() => {
           if (canvasRef.current) {
@@ -272,14 +270,11 @@ export default function MorseCodePuzzle() {
     }
   };
 
-
-
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext("2d");
       if (ctx) {
-
         ctx.fillStyle = "#2A0E61";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         drawSignal(ctx, canvas.width, canvas.height, null);

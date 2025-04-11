@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Trophy, Stars, Sparkles, Coins, Map, Gem } from "lucide-react"
+import { Trophy, Stars, Sparkles, Coins } from "lucide-react"
 import { useEffect, useState } from "react"
 import confetti from "canvas-confetti"
 
@@ -19,7 +19,6 @@ export default function SuccessPage() {
 }
 
 function SuccessContent() {
-  const [showStats, _setShowStats] = useState(false)
   const [counter, setCounter] = useState(0)
 
   useEffect(() => {

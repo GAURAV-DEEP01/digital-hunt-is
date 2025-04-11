@@ -66,11 +66,11 @@ export function PasswordForm({ checkPasswordAction, puzzleId }: PasswordFormProp
         triggerConfetti()
       } else {
         setIsIncorrect(true)
-        setCooldownTime(3)
+        setCooldownTime(10)
       }
     } catch (error) {
       setIsIncorrect(true)
-      setCooldownTime(3)
+      setCooldownTime(10)
     }
 
     setTimeout(() => {
@@ -105,7 +105,7 @@ export function PasswordForm({ checkPasswordAction, puzzleId }: PasswordFormProp
               <Clock className="h-4 w-4" />
               <div className="w-full">
                 <Progress
-                  value={((3 - cooldownTime) / 3) * 100}
+                  value={((10 - cooldownTime) / 10) * 100}
                   className="h-2 bg-[#1A0745]"
                   indicatorClassName="bg-gradient-to-r from-purple-600 to-cyan-500"
                 />
