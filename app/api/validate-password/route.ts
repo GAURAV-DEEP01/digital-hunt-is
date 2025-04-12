@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { validatePassword } from "@/lib/password-utils";
 
+// this is a one time use website 
 const PUZZLE_PASSWORDS: Record<string, { password: string; link: string }> = {
   shapecountpuzz: {
     password: "46",
