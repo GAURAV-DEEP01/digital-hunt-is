@@ -11,7 +11,7 @@ const PUZZLE_PASSWORDS: Record<string, { password: string; link: string }> = {
     link: "/solvetheriddle012dfqepdznmxcmnvzlajdfwoeiurqweoruqerqpuoerpouerq",
   },
   solvetheriddle: {
-    password: "423",
+    password: "421",
     link: "https://woxorxdl1l-eme-hun31t6ings3.vercel.app/",
   },
   figureitout: {

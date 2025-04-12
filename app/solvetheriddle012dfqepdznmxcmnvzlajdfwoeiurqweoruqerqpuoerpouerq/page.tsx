@@ -15,7 +15,7 @@ export default function DebugCodePuzzle() {
           <pre>{`I’m a number with three parts,
 The first is a floor that’s not too far,
 The second is half as much as the first,
-The third is just a little more,
+The third is just a little less,
 Find me and your hunt is done—
 What room am I?`}</pre>
         </div>
