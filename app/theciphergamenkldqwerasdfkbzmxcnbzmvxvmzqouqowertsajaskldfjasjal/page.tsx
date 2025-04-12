@@ -4,12 +4,12 @@ import { PuzzleLayout } from "@/components/puzzle-layout"
 import { PasswordForm } from "@/components/password-form"
 import { Card } from "@/components/ui/card"
 import { checkPassword } from "@/lib/password-utils"
-import { ArrowRight, Lock, Unlock, RefreshCw } from "lucide-react"
+import { Lock, Unlock } from "lucide-react"
 
 export default function CipherPuzzle() {
   const [animating, setAnimating] = useState(false);
   const [showHint, setShowHint] = useState(false);
-  const cipher = "SXCCOH LV WKH SDVVZRUG";
+  const cipher = "JHTL OLYL AV IBUR";
 
   const animateCipher = () => {
     setAnimating(true);

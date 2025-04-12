@@ -7,7 +7,7 @@ const PUZZLE_PASSWORDS: Record<string, { password: string; link: string }> = {
     link: "/figureitoutyourselfsdsdsdfljasldkfjashdflaksdfjjfaasdfasdfdfasdf",
   },
   theciphergame: {
-    password: "PUZZLE IS THE PASSWORD",
+    password: "CAME HERE TO BUNK",
     link: "/solvetheriddle012dfqepdznmxcmnvzlajdfwoeiurqweoruqerqpuoerpouerq",
   },
   solvetheriddle: {
